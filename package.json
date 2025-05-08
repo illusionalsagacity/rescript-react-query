@@ -1,0 +1,16 @@
+{
+  "name": "@illusionalsagacity/rescript-react-query",
+  "packageManager": "yarn@4.5.3",
+  "devDependencies": {
+    "@glennsl/rescript-fetch": "^0.2.3",
+    "@rescript/core": "^1.6.1",
+    "rescript": "^11.1.4"
+  },
+  "scripts": {
+    "build": "rescript",
+    "clean": "rescript clean",
+    "format": "rescript format",
+    "start": "rescript build -w",
+    "test": "rescript test"
+  }
+}

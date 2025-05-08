@@ -1,0 +1,11 @@
+{
+  "name": "@illusionalsagacity/rescript-react-query",
+  "bsc-flags": ["-open RescriptCore"],
+  "bs-dependencies": ["@glennsl/rescript-fetch", "@rescript/core"],
+  "sources": [{ "dir": "src", "subdirs": true }, { "dir": "__test__", "subdirs": true, "type": "dev" }],
+  "package-specs": {
+    "module": "esmodule",
+    "in-source": true,
+    "suffix": ".res.mjs"
+  }
+}
