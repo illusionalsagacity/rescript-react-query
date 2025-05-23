@@ -1,7 +1,7 @@
 type t<'data> = {
   data: 'data,
   dataUpdatedAt: int,
-  error: unit,
+  error: unit, // FIXME: this is incorrect
   errorUpdateCount: int,
   failureReason: unit,
   fetchStatus: FetchStatus.t,

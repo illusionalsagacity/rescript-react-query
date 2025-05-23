@@ -19,10 +19,10 @@ external useSelectQuery: UseSelectQueryOptions.t<'slice, 'key, 'data, 'meta> => 
 @module("react-query")
 external useInfiniteQuery: UseInfiniteQueryOptions.t<
   'key,
-  'data,
+  'page,
   'meta,
   'pageParam,
-> => QueryResult.t<'data> = "useInfiniteQuery"
+> => InfiniteQueryResult.t<'key, 'page, 'pageParam> = "useInfiniteQuery"
 
 @module("react-query")
 external usePrefetchQuery: Query.options<'key, 'data, 'meta> => unit = "usePrefetchQuery"

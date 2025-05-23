@@ -1,0 +1,1 @@
+@unboxed type t = | @as("success") Success | @as("error") Error

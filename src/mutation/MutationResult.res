@@ -18,6 +18,9 @@ type t<'variables, 'data, 'context> = {
   failureReason: Null.t<Error.t>,
   submittedAt: int,
   variables: option<'variables>,
-  mutate: ('variables, callbacks<'variables, 'data, 'context>) => unit,
-  mutateAsync: ('variables, callbacks<'variables, 'data, 'context>) => Js.Promise.t<'data>,
+  mutate: ('variables, ~options: callbacks<'variables, 'data, 'context>=?) => unit,
+  mutateAsync: (
+    'variables,
+    ~options: callbacks<'variables, 'data, 'context>=?,
+  ) => Js.Promise.t<'data>,
 }

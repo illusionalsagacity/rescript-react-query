@@ -1,7 +1,7 @@
-type t<'key, 'data, 'meta, 'pageParam> = {
-  ...UseQueryOptions.t<'key, 'data, 'meta>,
+type t<'key, 'page, 'meta, 'pageParam> = {
+  ...UseQueryOptions.t<'key, 'page, 'meta>,
   initialPageParam: 'pageParam,
-  getNextPageParam: unit => Nullable.t<'pageParam>, // TODO
-  getPreviousPageParam: unit => Nullable.t<'pageParam>, // TODO
-  maxPages: option<int>,
+  getNextPageParam: ('page, array<'page>, 'pageParam, array<'pageParam>) => option<'pageParam>,
+  getPreviousPageParam?: ('page, array<'page>, 'pageParam, array<'pageParam>) => option<'pageParam>, // TODO
+  maxPages?: int,
 }

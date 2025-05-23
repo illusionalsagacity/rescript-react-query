@@ -1,8 +1,20 @@
 {
   "name": "@illusionalsagacity/rescript-react-query",
+  "jsx": {
+    "mode": "automatic",
+    "version": 4
+  },
   "bsc-flags": ["-open RescriptCore"],
-  "bs-dependencies": ["@glennsl/rescript-fetch", "@rescript/core"],
-  "sources": [{ "dir": "src", "subdirs": true }, { "dir": "__test__", "subdirs": true, "type": "dev" }],
+  "bs-dependencies": [
+    "@glennsl/rescript-fetch",
+    "@rescript/core",
+    "@rescript/react"
+  ],
+  "bs-dev-dependencies": [],
+  "sources": [
+    { "dir": "src", "subdirs": true },
+    { "dir": "__test__", "subdirs": true, "type": "dev" }
+  ],
   "package-specs": {
     "module": "esmodule",
     "in-source": true,

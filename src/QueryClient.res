@@ -67,7 +67,7 @@ type infiniteQueryOptions<'key, 'data, 'meta, 'pageParam> = {
 external fetchInfiniteQuery: (
   t,
   infiniteQueryOptions<'key, 'data, 'meta, 'pageParam>,
-) => promise<InfiniteQueryResult.data<'data, 'pageParam>> = "fetchInfiniteQuery"
+) => promise<PaginatedData.t<'data, 'pageParam>> = "fetchInfiniteQuery"
 
 // prefetchQuery(options)
 @send
@@ -93,7 +93,7 @@ external ensureQueryData: (t, Query.options<'key, 'data, 'meta>) => promise<'dat
 external ensureInfiniteQueryData: (
   t,
   infiniteQueryOptions<'key, 'data, 'meta, 'pageParam>,
-) => promise<InfiniteQueryResult.data<'data, 'pageParam>> = "ensureInfiniteQueryData"
+) => promise<PaginatedData.t<'data, 'pageParam>> = "ensureInfiniteQueryData"
 
 // getQueriesData(filters)
 @send
