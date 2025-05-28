@@ -17,17 +17,11 @@ type cancelOptions = {
   throwOnError?: bool,
 }
 
-type resetOptions = {
-  throwOnError?: bool,
-}
+type resetOptions = {throwOnError?: bool}
 
-type setQueryDataOptions = {
-  updatedAt?: int, // Timestamp
-}
+type setQueryDataOptions = {updatedAt?: int} // Timestamp
 
-type setQueriesDataOptions = {
-  updatedAt?: int, // Timestamp
-}
+type setQueriesDataOptions = {updatedAt?: int} // Timestamp
 
 // Basic Mutation Options (subset of UseMutationOptions)
 type mutationOptions<'variables, 'data, 'meta, 'context> = {
@@ -41,11 +35,19 @@ type mutationOptions<'variables, 'data, 'meta, 'context> = {
 
 // DefaultOptions might be complex, using a placeholder structure
 type defaultOptions = {
-  queries?: Query.options<unknown, unknown, unknown>, // Using unknown for generics
+  queries?: Query.baseOptions<unknown, unknown, unknown>, // Using unknown for generics
+  // FIXME: create a new module for MutationOptions
   mutations?: mutationOptions<unknown, unknown, unknown, unknown>, // Using unknown for generics
 }
 
-@new external make: (~queryCache: QueryCache.t=?, ~mutationCache: MutationCache.t=?, ~defaultOptions: defaultOptions=?) => t = "QueryClient"
+type config = {
+  queryCache?: QueryCache.t,
+  mutationCache?: MutationCache.t,
+  defaultOptions?: defaultOptions,
+}
+
+@module("@tanstack/react-query") @new
+external make: (~config: config=?) => t = "QueryClient"
 
 // --- Query Methods ---
 
@@ -82,11 +84,13 @@ external prefetchInfiniteQuery: (
 
 // getQueryData(queryKey, filters?)
 @send
-external getQueryData: (t, 'key, ~filters: QueryFilters.t_withoutKey<'data>=?) => option<'data> = "getQueryData"
+external getQueryData: (t, 'key, ~filters: QueryFilters.t_withoutKey<'data>=?) => option<'data> =
+  "getQueryData"
 
 // ensureQueryData(options)
 @send
-external ensureQueryData: (t, Query.options<'key, 'data, 'meta>) => promise<'data> = "ensureQueryData"
+external ensureQueryData: (t, Query.options<'key, 'data, 'meta>) => promise<'data> =
+  "ensureQueryData"
 
 // ensureInfiniteQueryData(options)
 @send
@@ -97,7 +101,10 @@ external ensureInfiniteQueryData: (
 
 // getQueriesData(filters)
 @send
-external getQueriesData: (t, QueryFilters.t_optionalKey<'key, 'data, 'meta>) => array<('key, 'data)> = "getQueriesData"
+external getQueriesData: (
+  t,
+  QueryFilters.t_optionalKey<'key, 'data, 'meta>,
+) => array<('key, 'data)> = "getQueriesData"
 
 // setQueryData(queryKey, updater, options?)
 type queryDataUpdater<'data> = Data('data) | Fn(option<'data> => option<'data>)
@@ -116,7 +123,7 @@ external getQueryState: (
   t,
   'key,
   ~filters: QueryFilters.t_withoutKey<'data>=?,
-) => option<QueryState.t<'data, Error.t>> = "getQueryState" // Assuming Error.t for error type
+) => option<QueryState.t<'data>> = "getQueryState"
 
 // setQueriesData(filters, updater, options?)
 @send
@@ -171,8 +178,10 @@ external isFetching: (t, ~filters: QueryFilters.t_optionalKey<'key, 'data, 'meta
 
 // isMutating(filters?)
 @send
-external isMutating: (t, ~filters: MutationFilters.t_optionalKey<'key, 'data>=?) => int =
-  "isMutating"
+external isMutating: (
+  t,
+  ~filters: MutationFilters.t_optionalKey<'key, 'data, 'variables, 'context>=?,
+) => int = "isMutating"
 
 // --- Defaults ---
 
@@ -189,8 +198,7 @@ external getQueryDefaults: (t, 'key) => option<Query.options<'key, unknown, unkn
 
 // setQueryDefaults(queryKey, options)
 @send
-external setQueryDefaults: (t, 'key, Query.options<'key, 'data, 'meta>) => unit =
-  "setQueryDefaults"
+external setQueryDefaults: (t, 'key, Query.options<'key, 'data, 'meta>) => unit = "setQueryDefaults"
 
 // getMutationDefaults(mutationKey)
 @send

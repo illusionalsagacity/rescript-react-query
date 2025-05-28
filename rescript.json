@@ -1,5 +1,6 @@
 {
   "name": "@illusionalsagacity/rescript-react-query",
+  "namespace": "ReactQuery",
   "jsx": {
     "mode": "automatic",
     "version": 4
@@ -10,10 +11,14 @@
     "@rescript/core",
     "@rescript/react"
   ],
-  "bs-dev-dependencies": [],
+  "bs-dev-dependencies": [
+    "@illusionalsagacity/rescript-msw",
+    "rescript-vitest"
+  ],
   "sources": [
     { "dir": "src", "subdirs": true },
-    { "dir": "__test__", "subdirs": true, "type": "dev" }
+    { "dir": "__test__", "subdirs": true, "type": "dev" },
+    { "dir": "example", "subdirs": true, "type": "dev" }
   ],
   "package-specs": {
     "module": "esmodule",

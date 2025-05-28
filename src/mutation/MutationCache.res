@@ -1,5 +1,5 @@
 type t
-type options
+type options = {}
 
 type notifyEvent = [
   | #added
@@ -7,10 +7,11 @@ type notifyEvent = [
   | #updated
 ]
 
-type listener = option<Mutation.t> => unit
+type listener<'data, 'variables, 'context> = option<Mutation.t<'data, 'variables, 'context>> => unit
 
-
-@new external make: options => t = "MutationCache"
-@send external getAll: t => array<Mutation.t> = "getAll"
+@module("@tanstack/react-query")
+@new external make: (~options: options=?) => t = "MutationCache"
+// FIXME: this isn't correct, each mutation should have its own type variables
+// @send external getAll: t => array<Mutation.t<'data, 'variables, 'context>> = "getAll"
 @send external clear: t => unit = "clear"
 @send external subscribe: (t, notifyEvent => unit) => unit => unit = "subscribe"

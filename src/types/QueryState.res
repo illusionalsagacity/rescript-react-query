@@ -1,19 +1,14 @@
-type t<'data, 'error> = {
+type t<'data> = {
   data: option<'data>,
   dataUpdateCount: int,
   dataUpdatedAt: float,
-  error: option<'error>,
+  error: option<Error.t>,
   errorUpdateCount: int,
   errorUpdatedAt: float,
   fetchFailureCount: int,
-  fetchFailureReason: option<'error>,
+  fetchFailureReason: option<Error.t>,
   fetchMeta: option<FetchMeta.t>,
   isInvalidated: bool,
   status: QueryStatus.t,
   fetchStatus: FetchStatus.t,
 }
-
-// // Note: You'll need to define these types separately
-// and fetchMeta = {
-//   // Define FetchMeta structure here
-// }

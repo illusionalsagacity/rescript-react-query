@@ -1,0 +1,1 @@
+type t<'data, 'variables, 'context>

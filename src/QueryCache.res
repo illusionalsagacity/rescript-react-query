@@ -7,9 +7,8 @@ type options = {
   onSettled?: 'key 'data 'error 'meta. (option<'data>, option<'error>, Query.t<'key, 'data, 'meta>) => unit,
 }
 
-@new external make: options => t = "QueryCache"
-
-// let cache = make({ onError: (error, query) => Js.log2("QueryCache error", error, query) })
+@module("@tanstack/react-query")
+@new external make: (~options: options=?) => t = "QueryCache"
 
 @send external clear: t => unit = "clear"
 @send external find: (t, ~filters: QueryFilters.t_requiredKey<'key, 'data, 'meta>=?) => option<Query.t<'key, 'data, 'meta>> = "find"

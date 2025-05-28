@@ -1,5 +1,5 @@
 type props = {
-  queryClient: QueryClient.t,
+  client: QueryClient.t,
   children: React.element,
 }
 

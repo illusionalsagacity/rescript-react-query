@@ -8,9 +8,10 @@ type t<'key, 'data, 'meta> = {
 
 @unboxed type staleTime<'key, 'data, 'meta> = Int(int) | Fn(t<'key, 'data, 'meta> => int)
 
-type options<'key, 'data, 'meta> = {
-  queryKey: 'key,
-  queryFn: QueryFunctionContext.t<'key, 'meta> => promise<'data>,
+/**
+This type is present to allow a Partial-like behavior for custom hooks, and also for future defaulted options via `setQueryDefaults`.
+ */
+type baseOptions<'key, 'data, 'meta> = {
   queryHashFn?: 'key => string,
   networkMode?: NetworkMode.t,
   retry?: Retry.t,
@@ -21,6 +22,12 @@ type options<'key, 'data, 'meta> = {
   initialDataUpdatedAt?: InitialDataUpdatedAt.t,
   subscribed?: bool,
   meta?: 'meta,
+}
+
+type options<'key, 'data, 'meta> = {
+  ...baseOptions<'key, 'data, 'meta>,
+  queryKey: 'key,
+  queryFn: QueryFunctionContext.t<'key, 'meta> => promise<'data>,
 }
 
 @get external options: t<'key, 'data, 'meta> => options<'key, 'data, 'meta> = "options"

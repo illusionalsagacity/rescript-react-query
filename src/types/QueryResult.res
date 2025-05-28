@@ -1,5 +1,3 @@
-// open UtilityTypes
-
 @tag("status")
 type t<'data> =
   | @as("pending")

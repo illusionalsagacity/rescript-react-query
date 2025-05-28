@@ -1,5 +1,5 @@
 type callbacks<'variables, 'data, 'context> = {
-  // onMutate: unit => unit,
+  onMutate?: unit => unit,
   onSuccess?: ('data, 'variables, 'context) => unit,
   onError?: (Error.t, 'variables, option<'context>) => unit,
   onSettled?: (option<'data>, option<Error.t>, option<'context>) => unit,
