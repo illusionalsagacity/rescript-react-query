@@ -12,11 +12,12 @@
 #!.yarn/cache
 .pnp.*
 
-lib
-.bsb.lock
 node_modules
 
 # rescript
+lib
+.merlin
+.bsb.lock
 *.res.mjs
 *.res.cjs
 *.res.js
