@@ -4,9 +4,6 @@
 // The main Mutation type, parameterized by data types
 type t<'data, 'variables, 'context>
 
-// Forward declaration for Retryer (internal type)
-type retryer<'data>
-
 // Mutation state - represents the current state of a mutation
 type state<'data, 'variables, 'context> = {
   context: option<'context>,

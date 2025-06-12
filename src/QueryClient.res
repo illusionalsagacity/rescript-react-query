@@ -84,7 +84,7 @@ external prefetchInfiniteQuery: (
 
 // getQueryData(queryKey, filters?)
 @send
-external getQueryData: (t, 'key, ~filters: QueryFilters.t_withoutKey<'data>=?) => option<'data> =
+external getQueryData: (t, 'key, ~filters: QueryFilters.t_withoutKey=?) => option<'data> =
   "getQueryData"
 
 // ensureQueryData(options)
@@ -122,7 +122,7 @@ external setQueryData: (
 external getQueryState: (
   t,
   'key,
-  ~filters: QueryFilters.t_withoutKey<'data>=?,
+  ~filters: QueryFilters.t_withoutKey=?,
 ) => option<QueryState.t<'data>> = "getQueryState"
 
 // setQueriesData(filters, updater, options?)
