@@ -4,22 +4,46 @@ let showModal = ref => {
   ref.React.current->Nullable.forEach(el => Obj.magic(el)["showModal"]())
 }
 
+let postsQueryKey = ("posts", "all")
+
 @react.component
 let make = () => {
   let successDialogRef = React.useRef(Nullable.null)
   let errorDialogRef = React.useRef(Nullable.null)
+  let queryClient = ReactQuery.useQueryClient()
   let {data: _, status: _mutationStatus, error: _, mutate, reset, _} = useCreatePost({
-    onError: (error, _variables, _context) => {
+    onMutate: _variables => {
+      // this is just an example, this doesn't really work correctly since the list is not updated
+      let old = QueryClient.getQueryData(queryClient, postsQueryKey)
+      let _ = QueryClient.setQueryData(queryClient, postsQueryKey, Data(_variables))
+
+      {
+        previousData: old,
+      }
+    },
+    onSettled: (_data, _error, _variables, _context) =>
+      queryClient->QueryClient.invalidateQueries(
+        ~filters={
+          queryKey: postsQueryKey,
+        },
+      ),
+    onError: async (error, _variables, _context) => {
       Console.error(error)
       showModal(errorDialogRef)
+      switch _context {
+      | Some({previousData: Some(previousData)}) => {
+          let _ = QueryClient.setQueryData(queryClient, postsQueryKey, Data(previousData))
+        }
+      | _ => Console.log("No previous data to restore")
+      }
     },
-    onSuccess: (_data, _variables, _context) => {
+    onSuccess: async (_data, _variables, _context) => {
       Console.log("Post created successfully!")
       showModal(successDialogRef)
     },
   })
 
-  let postQueryResult = useGetPost(Some("hello"))
+  let postQueryResult = useGetPost(None)
 
   switch postQueryResult {
   | Pending(_) => Console.log("pending")
@@ -60,10 +84,11 @@ let make = () => {
     <section>
       {successDialog}
       {errorDialog}
-      <h2> {React.string("Hello")} </h2>
-      <p> {React.string("World")} </p>
-      <pre> {JSON.stringify(data)->React.string} </pre>
-      <button onClick={_event => mutate(Null)}> {React.string("Create Post")} </button>
+      <h2> {React.string(data.Post.title)} </h2>
+      <p> {data.description->Option.mapOr(React.null, React.string)} </p>
+      <button onClick={_event => {Post.id: "-1", title: "another one"}->Post.encode->mutate}>
+        {React.string("Create Post")}
+      </button>
     </section>
   | Error({error, _}) =>
     <section>

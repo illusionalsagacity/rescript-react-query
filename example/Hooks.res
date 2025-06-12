@@ -1,5 +1,7 @@
+type context = { previousData: option<JSON.t> }
+
 let useCreatePost = (
-  options: UseMutationOptions.baseOptions<(string, string), JSON.t, JSON.t, unit, unit>,
+  options: UseMutationOptions.baseOptions<(string, string), JSON.t, Post.t, unit, context>,
 ) => {
   ReactQuery.useMutation({
     onError: ?options.onError,
@@ -24,7 +26,10 @@ let useCreatePost = (
       }
 
       switch await Fetch.Response.json(response) {
-      | parsed => parsed
+      | parsed =>
+        try Post.decode(parsed) catch {
+        | _e => panic("aaaaaa")
+        }
       | exception _e => panic("aaaaaa")
       }
     },
@@ -43,7 +48,10 @@ let useGetPost = id =>
           }
 
           switch await Fetch.Response.json(response) {
-          | parsed => parsed
+          | parsed =>
+            try Post.decode(parsed) catch {
+            | _e => panic("aaaaaa")
+            }
           | exception _e => panic("aaaaaa")
           }
         }
@@ -51,6 +59,7 @@ let useGetPost = id =>
       | None => SkipToken.skipToken
       }
     },
+    enabled: id->Option.isSome->Enabled.fromBool,
   })
 
 let useGetPostSuspense = id => {
@@ -63,7 +72,10 @@ let useGetPostSuspense = id => {
       }
 
       switch await Fetch.Response.json(response) {
-      | parsed => parsed
+      | parsed =>
+        try Post.decode(parsed) catch {
+        | _e => panic("aaaaaa")
+        }
       | exception _e => panic("aaaaaa")
       }
     },
