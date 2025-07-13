@@ -1,4 +1,4 @@
-type context = { previousData: option<JSON.t> }
+type context = {previousData: option<JSON.t>}
 
 let useCreatePost = (
   options: UseMutationOptions.baseOptions<(string, string), JSON.t, Post.t, unit, context>,
@@ -16,23 +16,30 @@ let useCreatePost = (
     meta: ?options.meta,
     scope: ?options.scope,
     mutationKey: ("posts", "all"),
-    mutationFn: async (payload, _) => {
-      let response = await Fetch.fetch(
-        `/api/posts`,
-        {method: #POST, body: payload->JSON.stringify->Fetch.Body.string},
-      )
-      if !Fetch.Response.ok(response) {
-        panic("http error code")
-      }
-
-      switch await Fetch.Response.json(response) {
-      | parsed =>
-        try Post.decode(parsed) catch {
-        | _e => panic("aaaaaa")
+    mutationFn: async (payload, _) =>
+      try {
+        let response = await Fetch.fetch(
+          `/api/posts`,
+          {method: #POST, body: payload->JSON.stringify->Fetch.Body.string},
+        )
+        if !Fetch.Response.ok(response) {
+          panic("http error code")
         }
-      | exception _e => panic("aaaaaa")
-      }
-    },
+
+        %debugger
+        switch await Fetch.Response.json(response) {
+        | parsed =>
+          try Post.decode(parsed) catch {
+          | _e => panic("aaaaaa")
+          }
+        | exception _e => panic("aaaaaa")
+        }
+      } catch {
+      | Exn.Error(e) => {
+          Console.error(e)
+          panic("Error creating post")
+        }
+      },
   })
 }
 
@@ -47,6 +54,7 @@ let useGetPost = id =>
             panic("http error code")
           }
 
+          %debugger
           switch await Fetch.Response.json(response) {
           | parsed =>
             try Post.decode(parsed) catch {
@@ -71,6 +79,7 @@ let useGetPostSuspense = id => {
         panic("http error code")
       }
 
+      %debugger
       switch await Fetch.Response.json(response) {
       | parsed =>
         try Post.decode(parsed) catch {

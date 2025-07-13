@@ -4,6 +4,10 @@ let showModal = ref => {
   ref.React.current->Nullable.forEach(el => Obj.magic(el)["showModal"]())
 }
 
+let closeDialog = ref => {
+  ref.React.current->Nullable.forEach(el => Obj.magic(el)["close"]())
+}
+
 let postsQueryKey = ("posts", "all")
 
 @react.component
@@ -12,13 +16,13 @@ let make = () => {
   let errorDialogRef = React.useRef(Nullable.null)
   let queryClient = ReactQuery.useQueryClient()
   let {data: _, status: _mutationStatus, error: _, mutate, reset, _} = useCreatePost({
-    onMutate: _variables => {
+    onMutate: variables => {
       // this is just an example, this doesn't really work correctly since the list is not updated
-      let old = QueryClient.getQueryData(queryClient, postsQueryKey)
-      let _ = QueryClient.setQueryData(queryClient, postsQueryKey, Data(_variables))
+      let previousData = QueryClient.getQueryData(queryClient, postsQueryKey)
+      let _ = QueryClient.setQueryData(queryClient, postsQueryKey, Data(variables))
 
       {
-        previousData: old,
+        previousData: previousData,
       }
     },
     onSettled: (_data, _error, _variables, _context) =>
@@ -27,10 +31,10 @@ let make = () => {
           queryKey: postsQueryKey,
         },
       ),
-    onError: async (error, _variables, _context) => {
+    onError: async (error, _variables, context) => {
       Console.error(error)
       showModal(errorDialogRef)
-      switch _context {
+      switch context {
       | Some({previousData: Some(previousData)}) => {
           let _ = QueryClient.setQueryData(queryClient, postsQueryKey, Data(previousData))
         }
@@ -52,10 +56,6 @@ let make = () => {
   }
 
   let suspenseResult = useGetPostSuspense("1")
-
-  let closeDialog = ref => {
-    ref.React.current->Nullable.forEach(el => Obj.magic(el)["close"]())
-  }
 
   let successDialog =
     <Dialog dialogRef=successDialogRef title="Success" subtitle="Post created successfully!">
@@ -90,17 +90,15 @@ let make = () => {
         {React.string("Create Post")}
       </button>
     </section>
-  | Error({error, _}) =>
-    <section>
-      {successDialog}
-      {errorDialog}
-      <h2> {React.string("Error")} </h2>
-      <p>
-        {switch error->Error.message {
-        | None => React.string("An error occurred")
-        | Some(message) => React.string(message)
-        }}
-      </p>
-    </section>
+  | Error({error, _}) => {
+      let errorMessage = error->Error.message->Option.getOr("An error occurred")->React.string
+
+      <section>
+        {successDialog}
+        {errorDialog}
+        <h2> {React.string("Error")} </h2>
+        <p> {errorMessage} </p>
+      </section>
+    }
   }
 }

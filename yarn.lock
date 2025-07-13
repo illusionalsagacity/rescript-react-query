@@ -376,14 +376,23 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@illusionalsagacity/rescript-msw@npm:~0.2.1":
-  version: 0.2.1
-  resolution: "@illusionalsagacity/rescript-msw@npm:0.2.1"
+"@illusionalsagacity/graphql-ppx@npm:2.0.0-f885fc66.0":
+  version: 2.0.0-f885fc66.0
+  resolution: "@illusionalsagacity/graphql-ppx@npm:2.0.0-f885fc66.0"
+  peerDependencies:
+    rescript: ^11.1.0
+  checksum: 10c0/e424b4c62e9ff0eaefad130ef4a22797f017c506614b1cb2276b9cd3287fa27a8f49d2b437dce6609ea520631997f8f05ea35a1f2b91071d15b7a988578d44e1
+  languageName: node
+  linkType: hard
+
+"@illusionalsagacity/rescript-msw@npm:~0.2.2":
+  version: 0.2.2
+  resolution: "@illusionalsagacity/rescript-msw@npm:0.2.2"
   peerDependencies:
     "@glennsl/rescript-fetch": ~0.2.2
     msw: ^2.0.0
     rescript: ~10.0.0 || ~10.1.0 || ~11.0.0 || ~11.1.0
-  checksum: 10c0/9c9d7b604977a37bd07f9918e7fa52edeb0fe6eedcddc0bbd607e3dcdd44d83e8fcd55a5169dd4baedd1883d5c80d248181bc39b4a2de91c7f2397e2d07c948e
+  checksum: 10c0/bcbd2b9b482040fda76cd35c464417e9fce8d43508f8e63679570d5812dd25164ef8fcb19483984621d3216f4a8bbae517d5dedb04638c410a41032511fc8dd9
   languageName: node
   linkType: hard
 
@@ -392,8 +401,8 @@ __metadata:
   resolution: "@illusionalsagacity/rescript-react-query@workspace:."
   dependencies:
     "@glennsl/rescript-fetch": "npm:^0.2.3"
-    "@illusionalsagacity/rescript-msw": "npm:~0.2.1"
-    "@reasonml-community/graphql-ppx": "npm:*"
+    "@illusionalsagacity/graphql-ppx": "npm:2.0.0-f885fc66.0"
+    "@illusionalsagacity/rescript-msw": "npm:~0.2.2"
     "@rescript/core": "npm:^1.6.1"
     "@rescript/react": "npm:~0.13.1"
     "@tanstack/react-query": "npm:^5.77.2"
@@ -563,15 +572,6 @@ __metadata:
   version: 0.11.0
   resolution: "@pkgjs/parseargs@npm:0.11.0"
   checksum: 10c0/5bd7576bb1b38a47a7fc7b51ac9f38748e772beebc56200450c4a817d712232b8f1d3ef70532c80840243c657d491cf6a6be1e3a214cff907645819fdc34aadd
-  languageName: node
-  linkType: hard
-
-"@reasonml-community/graphql-ppx@npm:*":
-  version: 1.2.3
-  resolution: "@reasonml-community/graphql-ppx@npm:1.2.3"
-  peerDependencies:
-    rescript: ^9.1.0
-  checksum: 10c0/bc0665cba6a8345d2eac03dc758b02aa89be175ca5bd2e460ad4e8a35bdf64ad61a7178dd92d79e3bd6478ed7d9c8f5d4ec900b4147c2b1bbe8d5e3a00319121
   languageName: node
   linkType: hard
 
