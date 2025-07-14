@@ -1,0 +1,13 @@
+__test__
+node_modules
+example
+lib
+public
+vite.config.mts
+index.html
+.prototools
+.merlin
+.bsb.lock
+*.res.mjs
+*.res.cjs
+*.res.js

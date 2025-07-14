@@ -3,6 +3,15 @@ type infiniteQueryFunctionContext<'key, 'meta, 'pageParam> = {
   pageParam: 'pageParam,
 }
 
+type resetQueryOptions = {
+  reset: unit => unit,
+  isReset: unit => bool,
+  clearReset: unit => unit,
+}
+
+@module("@tanstack/react-query")
+external useQueryErrorResetBoundary: unit => resetQueryOptions = "useQueryErrorResetBoundary"
+
 // type structuralSharing
 
 @module("@tanstack/react-query")

@@ -1,8 +1,14 @@
 type t
 
+type refetchType =
+  | @as("active") Active
+  | @as("inactive") Inactive
+  | @as("all") All
+  | @as("none") None
+
 // Placeholder types for complex options - these might need refinement or separate files
 type invalidateOptions = {
-  refetchType?: string, // "active" | "inactive" | "all" | "none"
+  refetchType?: refetchType,
   throwOnError?: bool,
 }
 
@@ -106,14 +112,11 @@ external getQueriesData: (
   QueryFilters.t_optionalKey<'key, 'data, 'meta>,
 ) => array<('key, 'data)> = "getQueriesData"
 
-// setQueryData(queryKey, updater, options?)
-type queryDataUpdater<'data> = Data('data) | Fn(option<'data> => option<'data>)
-
 @send
 external setQueryData: (
   t,
   'key,
-  queryDataUpdater<'data>,
+  @unwrap [#Data('data) | #Fn(option<'data> => option<'data>)],
   ~options: setQueryDataOptions=?,
 ) => option<'data> = "setQueryData"
 
@@ -130,7 +133,7 @@ external getQueryState: (
 external setQueriesData: (
   t,
   QueryFilters.t_optionalKey<'key, 'data, 'meta>,
-  queryDataUpdater<'data>,
+  @unwrap [#Data('data) | #Fn(option<'data> => option<'data>)],
   ~options: setQueriesDataOptions=?,
 ) => array<('key, 'data)> = "setQueriesData" // Returns array of [queryKey, data] tuples
 

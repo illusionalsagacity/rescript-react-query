@@ -29,15 +29,12 @@ let ready = {
   let sw = setupWorker()
   sw->ServiceWorker.useMany([
     MSWFixtures.handleGetPostById,
-    // MSWFixtures.handleCreatePostSuccess,
+    MSWFixtures.handleCreatePostSuccess,
     MSWFixtures.handleCreatePostError,
     MSWFixtures.handleGetPosts,
   ])
 
-  await ServiceWorker.startWithOptions(
-    sw,
-    {onUnhandledRequest: #warn},
-  )
+  await ServiceWorker.startWithOptions(sw, {onUnhandledRequest: #warn})
 }
 
 let root = document->unsafe_querySelector("#react-root")->ReactDOM.Client.createRoot
@@ -46,10 +43,17 @@ root->ReactDOM.Client.Root.render(
   <React.StrictMode>
     <QueryClientProvider client>
       <React.Suspense fallback={<div> {React.string("Loading...")} </div>}>
-        <Example />
-        <ReactQueryDevtools />
+        <QueryResetErrorBoundary>
+            <RescriptReactErrorBoundary
+              fallback={_ => <div>
+                {React.string("Error occurred!")}
+                <button> {React.string("Reset")} </button>
+              </div>}>
+              <Example />
+            </RescriptReactErrorBoundary>
+        </QueryResetErrorBoundary>
       </React.Suspense>
+      <ReactQueryDevtools />
     </QueryClientProvider>
   </React.StrictMode>,
 )
-

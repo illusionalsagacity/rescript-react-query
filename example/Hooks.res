@@ -54,7 +54,6 @@ let useGetPost = id =>
             panic("http error code")
           }
 
-          %debugger
           switch await Fetch.Response.json(response) {
           | parsed =>
             try Post.decode(parsed) catch {
@@ -79,7 +78,6 @@ let useGetPostSuspense = id => {
         panic("http error code")
       }
 
-      %debugger
       switch await Fetch.Response.json(response) {
       | parsed =>
         try Post.decode(parsed) catch {
@@ -88,5 +86,48 @@ let useGetPostSuspense = id => {
       | exception _e => panic("aaaaaa")
       }
     },
+  })
+}
+
+let useEnsureQueryData = id => {
+  let queryClient = ReactQuery.useQueryClient()
+
+  queryClient->QueryClient.ensureQueryData({
+    queryKey: ("posts", id),
+    queryFn: async ({queryKey: (_, id), _}) => {
+      let response = await Fetch.fetch(`/api/posts/${id}`, {method: #GET})
+      if !Fetch.Response.ok(response) {
+        panic("http error code")
+      }
+
+      switch await Fetch.Response.json(response) {
+      | parsed =>
+        try Post.decode(parsed) catch {
+        | _e => panic("aaaaaa")
+        }
+      | exception _e => panic("aaaaaa")
+      }
+    },
+  })
+}
+
+let useInvalidatePost = () => {
+  let queryClient = ReactQuery.useQueryClient()
+  React.useCallback(() => {
+    queryClient->QueryClient.invalidateQueries(
+      ~filters={
+        queryKey: ("posts", "all"),
+      },
+      ~options={refetchType: All},
+    )
+  }, [queryClient])
+}
+
+let usePostMutationState = () => {
+  ReactQuery.useMutationState({
+    filters: {
+      mutationKey: ("posts", "all"),
+    },
+    select: mutation => Mutation.state(mutation),
   })
 }

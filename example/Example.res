@@ -17,9 +17,21 @@ let make = () => {
   let queryClient = ReactQuery.useQueryClient()
   let {data: _, status: _mutationStatus, error: _, mutate, reset, _} = useCreatePost({
     onMutate: variables => {
-      // this is just an example, this doesn't really work correctly since the list is not updated
+      QueryClient.cancelQueries(queryClient, ~filters={queryKey: postsQueryKey})->ignore
       let previousData = QueryClient.getQueryData(queryClient, postsQueryKey)
-      let _ = QueryClient.setQueryData(queryClient, postsQueryKey, Data(variables))
+
+      let _ = queryClient->QueryClient.setQueryData(
+        postsQueryKey,
+        #Fn(
+          previousData =>
+            switch previousData {
+            | None
+            | Some([]) =>
+              [variables]->Some
+            | Some(previousData) => [...previousData, variables]->Some
+            },
+        ),
+      )
 
       {
         previousData: previousData,
@@ -36,7 +48,7 @@ let make = () => {
       showModal(errorDialogRef)
       switch context {
       | Some({previousData: Some(previousData)}) => {
-          let _ = QueryClient.setQueryData(queryClient, postsQueryKey, Data(previousData))
+          let _ = QueryClient.setQueryData(queryClient, postsQueryKey, #Data(previousData))
         }
       | _ => Console.log("No previous data to restore")
       }
