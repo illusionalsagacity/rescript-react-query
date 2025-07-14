@@ -44,13 +44,14 @@ root->ReactDOM.Client.Root.render(
     <QueryClientProvider client>
       <React.Suspense fallback={<div> {React.string("Loading...")} </div>}>
         <QueryResetErrorBoundary>
-            <RescriptReactErrorBoundary
-              fallback={_ => <div>
+          <RescriptReactErrorBoundary
+            fallback={_ =>
+              <div>
                 {React.string("Error occurred!")}
                 <button> {React.string("Reset")} </button>
               </div>}>
-              <Example />
-            </RescriptReactErrorBoundary>
+            <Example />
+          </RescriptReactErrorBoundary>
         </QueryResetErrorBoundary>
       </React.Suspense>
       <ReactQueryDevtools />
